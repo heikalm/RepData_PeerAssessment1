@@ -7,12 +7,32 @@ output:
 
 
 ## Loading and preprocessing the data
-
-
-```{r processing}
 # Check for file, download and unzip
+
+
+```r
 library(ggplot2)
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 filename <- 'reproducibleresearchassignment1'
 fileURL <- 'https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip'
 
@@ -28,28 +48,63 @@ activitydata <- read.csv('activity.csv')
 ```
 
 ## What is mean total number of steps taken per day?
-```{r}
+
+```r
 # histogram, mean and median of daily sum of steps
 dailysum <- aggregate(steps ~ date, activitydata, sum)
 hist(dailysum$steps, main='Histogram of steps in a day (imputed NAs)', xlab = 'Daily steps')
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+```r
 mean(dailysum$steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(dailysum$steps)
 ```
 
+```
+## [1] 10765
+```
+
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 # average steps per interval
 intervalmean <- aggregate(steps ~ interval, activitydata, mean)
 qplot(data=intervalmean, x=interval, y=steps, geom='line')
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+
+```r
 # which interval has the largest average number of steps
 intervalmean[which.max(intervalmean$steps),]
 ```
 
+```
+##     interval    steps
+## 104      835 206.1698
+```
+
 ## Imputing missing values
-```{r}
+
+```r
 # total number of NAs
 sum(is.na(activitydata$steps))
+```
 
+```
+## [1] 2304
+```
+
+```r
 # replace NAs with mean value for that interval
 navalues <- is.na(activitydata$steps)
 
@@ -67,11 +122,28 @@ names(filledactivitydata)[1] <- 'steps'
 # histogram, mean and median of daily sum of steps using filled data
 filleddailysum <- aggregate(steps ~ date, filledactivitydata, sum)
 hist(filleddailysum$steps, main='Histogram of steps in a day (imputed NAs)', xlab = 'Daily steps')
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+```r
 mean(filleddailysum$steps)
+```
+
+```
+## [1] 10766.19
+```
+
+```r
 median(filleddailysum$steps)
 ```
+
+```
+## [1] 10766.19
+```
 ## Are there differences in activity patterns between weekdays and weekends?
-```{r}
+
+```r
 # day of week for each date
 filledactivitydata$dayofweek <- weekdays(as.Date(filledactivitydata$date))
 
@@ -88,3 +160,5 @@ g +
         facet_grid(dayofweek ~ . ) +
         labs(title = 'Average steps per interval, weekday vs weekend')
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->

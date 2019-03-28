@@ -56,6 +56,11 @@ filledactivitydata[weekends,]$dayofweek <- "weekend"
 filledactivitydata[!weekends,]$dayofweek <- "weekday"
 filledactivitydata$dayofweek <- as.factor(filledactivitydata$dayofweek)
 
+#panel plot
+g <- ggplot(data=filledactivitydata, aes(x=interval, y=steps))
+g + 
+        stat_summary(fun.y='mean', geom='line') + 
+        facet_grid(dayofweek ~ . )
 
 
 
