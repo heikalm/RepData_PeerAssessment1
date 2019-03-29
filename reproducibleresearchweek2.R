@@ -60,7 +60,8 @@ filledactivitydata$dayofweek <- as.factor(filledactivitydata$dayofweek)
 g <- ggplot(data=filledactivitydata, aes(x=interval, y=steps))
 g + 
         stat_summary(fun.y='mean', geom='line') + 
-        facet_grid(dayofweek ~ . )
+        facet_grid(dayofweek ~ . ) +
+        labs(title = 'Average steps per interval, weekday vs weekend')
 
 
 
